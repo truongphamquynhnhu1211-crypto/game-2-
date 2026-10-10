@@ -11,13 +11,13 @@ app.use(express.static('public'));
 let players = [];
 
 io.on('connection', (socket) => {
-    console.log(`Có người chơi kết nối: ${socket.id}`);
+    console.log(`Người chơi kết nối: ${socket.id}`);
 
     if (players.length < 2) {
         players.push(socket.id);
         const playerRole = players.length === 1 ? 'Player 1' : 'Player 2';
         socket.emit('assign-role', playerRole);
-        
+
         if (players.length === 2) {
             io.emit('start-game', 'Trận đấu bắt đầu!');
         }
@@ -30,13 +30,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log(`Người chơi ngắt kết nối: ${socket.id}`);
-        players = players.filter(id => id !== socket.id);
-        io.emit('opponent-disconnected', 'Đối thủ đã rời phòng!');
-    });
-});
-
-socket.on('disconnect', () => {
         console.log(`Người chơi ngắt kết nối: ${socket.id}`);
         players = players.filter(id => id !== socket.id);
         io.emit('opponent-disconnected', 'Đối thủ đã rời phòng!');
