@@ -36,10 +36,14 @@ io.on('connection', (socket) => {
     });
 });
 
+socket.on('disconnect', () => {
+        console.log(`Người chơi ngắt kết nối: ${socket.id}`);
+        players = players.filter(id => id !== socket.id);
+        io.emit('opponent-disconnected', 'Đối thủ đã rời phòng!');
+    });
+});
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server đang chạy tại cổng ${PORT}`);
-});
-server.listen(PORT, () => {
-    console.log(`Server đang chạy tại: http://localhost:${PORT}`);
 });
